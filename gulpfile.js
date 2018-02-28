@@ -34,7 +34,7 @@ gulp.task( 'critical', function(){
   gulp.task( 'sass', function() {
     return gulp.src( 'src/**/*.scss' )
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-    .pipe(gulp.dest('src/css'))
+    .pipe(gulp.dest('src/'))
   } )
   gulp.task( 'concat', function(){
     return gulp.src( 'src/css/**/*.css' )
@@ -56,15 +56,12 @@ gulp.task( 'critical', function(){
   ]))
   .pipe(gulp.dest('dist/'))
 )
-gulp.task('default', function() {
-  gulp.task( 'imagemin' );
-  gulp.task( 'concat' );
-  gulp.task( 'concat-scripts' );
-  gulp.task( 'critical' );
-});
+gulp.task('default', [ 'sass', 'concat', 'concat-scripts', 'imagemin', 'critical' ] );
 gulp.task( 'watch', function() {
+  gulp.watch( ['src/**/*.scss'], ['sass'] );
   gulp.watch( ['src/**/*.css', '!dist/**/*'], ['concat', 'critical'] );
   gulp.watch( ['src/**/*.js', '!dist/**/*'], ['concat-scripts'] ); //TODO: REVISE SO THAT GULP DOESN'T LOOP. - SOLVED
   gulp.watch( ['src/*.html', '!dist/**/*'], ['critical'] );
   gulp.watch( ['src/**/*', '!src/**/*.js', '!src/**/*.css', '!src/**/*.scss', '!dist/**/*', '!src/**/*.html'], ['imagemin'] );
+
 } )
